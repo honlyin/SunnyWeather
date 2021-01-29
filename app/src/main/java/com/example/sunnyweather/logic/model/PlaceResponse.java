@@ -1,12 +1,14 @@
 package com.example.sunnyweather.logic.model;
 
-public class PlaceResponse {
-    String status;
-    Place place;
+import java.util.List;
 
-    public PlaceResponse(String status, Place place) {
+public class PlaceResponse {
+    public String status;
+    public List<Place> places;
+
+    public PlaceResponse(String status, List<Place> places) {
         this.status = status;
-        this.place = place;
+        this.places = places;
     }
 
     public static class Place {
