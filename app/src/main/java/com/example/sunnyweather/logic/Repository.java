@@ -24,7 +24,7 @@ public class Repository {
     }
 
     private LiveData<PlaceResponse> searchPlaces(String query) {
-        LiveData<PlaceResponse> responseLiveData;
+        LiveData<PlaceResponse> responseLiveData = null;
         new Thread() {
             @Override
             public void run() {
@@ -40,6 +40,7 @@ public class Repository {
                 }
             }
         };
+        return responseLiveData;
     }
 
 }
