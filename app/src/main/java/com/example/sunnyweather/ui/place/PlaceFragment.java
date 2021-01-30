@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.sunnyweather.R;
+import com.example.sunnyweather.logic.model.PlaceResponse;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +42,7 @@ public class PlaceFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private PlaceAdapter adapter;
 
     public PlaceFragment() {
         // Required empty public constructor
@@ -86,8 +91,19 @@ public class PlaceFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         placeRecyclerView.setLayoutManager(layoutManager);
-        PlaceAdapter adapter = new PlaceAdapter(this, placeViewModel.placeList);
+        adapter = new PlaceAdapter(this, placeViewModel.placeList);
         placeRecyclerView.setAdapter(adapter);
+        initListener();
+    }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        placeViewModel = new ViewModelProvider(this).get(PlaceViewModel.class);
+    }
+
+    private void initListener() {
         searchPlaceEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -111,12 +127,9 @@ public class PlaceFragment extends Fragment {
                 }
             }
         });
-    }
+//        placeViewModel.placeLiveData.observe(this, result -> {
+//
+//        });
 
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        placeViewModel = new ViewModelProvider(this).get(PlaceViewModel.class);
     }
 }
