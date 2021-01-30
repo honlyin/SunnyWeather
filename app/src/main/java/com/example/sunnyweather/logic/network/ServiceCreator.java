@@ -15,7 +15,7 @@ public class ServiceCreator {
                 .build();
     }
 
-    public static ServiceCreator getInstance() {
+    static ServiceCreator getInstance() {
         if (serviceCreator == null) {
             serviceCreator = new ServiceCreator();
         }
