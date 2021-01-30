@@ -1,5 +1,7 @@
 package com.example.sunnyweather.logic.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class PlaceResponse {
@@ -14,6 +16,7 @@ public class PlaceResponse {
     public static class Place {
         String name;
         Location location;
+        @SerializedName(value = "formatted_address")
         String address;
 
         public Place(String name, Location location, String address) {
@@ -32,4 +35,5 @@ public class PlaceResponse {
             this.latitude = latitude;
         }
     }
+
 }
