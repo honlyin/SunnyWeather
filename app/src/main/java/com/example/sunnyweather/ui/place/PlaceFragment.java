@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.sunnyweather.R;
 import com.example.sunnyweather.logic.model.PlaceResponse;
+import com.example.sunnyweather.utils.LogUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +33,7 @@ import java.util.Objects;
  */
 public class PlaceFragment extends Fragment {
 
+    private static final String TAG = "PlaceFragment";
     private PlaceViewModel placeViewModel;
     private EditText searchPlaceEdit;
     private RecyclerView placeRecyclerView;
@@ -91,6 +94,7 @@ public class PlaceFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        placeViewModel = new ViewModelProvider(this).get(PlaceViewModel.class);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         placeRecyclerView.setLayoutManager(layoutManager);
         adapter = new PlaceAdapter(this, placeViewModel.placeList);
@@ -102,7 +106,7 @@ public class PlaceFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        placeViewModel = new ViewModelProvider(this).get(PlaceViewModel.class);
+
     }
 
     private void initListener() {
@@ -118,6 +122,7 @@ public class PlaceFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+                LogUtils.d(TAG, "afterTextChanged: ");
                 final String content = s.toString();
                 if (content.isEmpty()) {
                     placeRecyclerView.setVisibility(View.GONE);
