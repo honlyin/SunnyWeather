@@ -8,6 +8,8 @@ import com.example.sunnyweather.logic.model.PlaceResponse;
 import com.example.sunnyweather.logic.network.ILoadListener;
 import com.example.sunnyweather.logic.network.SunnyWeatherNetworkUtil;
 
+import java.util.List;
+
 public class Repository {
     private static final String TAG = "Repository";
     private static Repository repository;
@@ -22,8 +24,8 @@ public class Repository {
         return repository;
     }
 
-    public MutableLiveData<PlaceResponse> searchPlaces(String query) {
-        MutableLiveData<PlaceResponse> responseLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<PlaceResponse.Place>> searchPlaces(String query) {
+        MutableLiveData<List<PlaceResponse.Place>> responseLiveData = new MutableLiveData<>();
         new Thread() {
             @Override
             public void run() {
@@ -41,7 +43,7 @@ public class Repository {
                         }
                     });
                     if (mPlaceResponse[0].status.equals("ok")) {
-                        responseLiveData.setValue(mPlaceResponse[0]);
+                        responseLiveData.setValue(mPlaceResponse[0].places);
                     } else {
                         Log.e(TAG, "response status is  " + mPlaceResponse[0].status);
                     }
