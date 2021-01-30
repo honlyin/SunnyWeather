@@ -135,6 +135,7 @@ public class PlaceFragment extends Fragment {
             }
         });
         placeViewModel.placeLiveData.observe(Objects.requireNonNull(this.getActivity()), result -> {
+            Log.d(TAG, "initListener: placeLiveData.observe ");
             if (result != null) {
                 placeRecyclerView.setVisibility(View.VISIBLE);
                 bgImageView.setVisibility(View.GONE);

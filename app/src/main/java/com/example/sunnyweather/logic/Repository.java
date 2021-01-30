@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.sunnyweather.logic.model.PlaceResponse;
 import com.example.sunnyweather.logic.network.ILoadListener;
 import com.example.sunnyweather.logic.network.SunnyWeatherNetworkUtil;
+import com.example.sunnyweather.utils.LogUtils;
 
 import java.util.List;
 
@@ -33,11 +34,12 @@ public class Repository {
 
         @Override
         public void failed(String error) {
-            Log.e(TAG, "failed: " + error);
+            LogUtils.e(TAG, "failed: " + error);
         }
     };
 
     public MutableLiveData<List<PlaceResponse.Place>> searchPlaces(String query) {
+        LogUtils.d(TAG, "searchPlaces: query = " + query);
         MutableLiveData<List<PlaceResponse.Place>> responseLiveData = new MutableLiveData<>();
         new Thread() {
             @Override
@@ -46,10 +48,10 @@ public class Repository {
                 if (mPlaceResponse.status.equals("ok")) {
                     responseLiveData.setValue(mPlaceResponse.places);
                 } else {
-                    Log.e(TAG, "response status is  " + mPlaceResponse.status);
+                    LogUtils.e(TAG, "response status is  " + mPlaceResponse.status);
                 }
             }
-        };
+        }.start();
         return responseLiveData;
     }
 
