@@ -13,6 +13,7 @@ import java.util.List;
 public class Repository {
     private static final String TAG = "Repository";
     private static Repository repository;
+    private PlaceResponse mPlaceResponse;
 
     private Repository() {
     }
@@ -24,31 +25,28 @@ public class Repository {
         return repository;
     }
 
+    private final ILoadListener loadListener = new ILoadListener() {
+        @Override
+        public void success(PlaceResponse placeResponse) {
+            mPlaceResponse = placeResponse;
+        }
+
+        @Override
+        public void failed(String error) {
+            Log.e(TAG, "failed: " + error);
+        }
+    };
+
     public MutableLiveData<List<PlaceResponse.Place>> searchPlaces(String query) {
         MutableLiveData<List<PlaceResponse.Place>> responseLiveData = new MutableLiveData<>();
         new Thread() {
             @Override
             public void run() {
-                try {
-                    final PlaceResponse[] mPlaceResponse = new PlaceResponse[1];
-                    SunnyWeatherNetworkUtil.getInstance().searchPlaces(query, new ILoadListener() {
-                        @Override
-                        public void success(PlaceResponse placeResponse) {
-                            mPlaceResponse[0] = placeResponse;
-                        }
-
-                        @Override
-                        public void failed(String error) {
-
-                        }
-                    });
-                    if (mPlaceResponse[0].status.equals("ok")) {
-                        responseLiveData.setValue(mPlaceResponse[0].places);
-                    } else {
-                        Log.e(TAG, "response status is  " + mPlaceResponse[0].status);
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, "run: ", e);
+                SunnyWeatherNetworkUtil.getInstance().searchPlaces(query, loadListener);
+                if (mPlaceResponse.status.equals("ok")) {
+                    responseLiveData.setValue(mPlaceResponse.places);
+                } else {
+                    Log.e(TAG, "response status is  " + mPlaceResponse.status);
                 }
             }
         };
