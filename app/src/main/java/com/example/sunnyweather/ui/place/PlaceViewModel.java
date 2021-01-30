@@ -14,7 +14,7 @@ import java.util.List;
 public class PlaceViewModel extends ViewModel {
     private final MutableLiveData<String> searchLiveData = new MutableLiveData<>();
     final List<PlaceResponse.Place> placeList = new ArrayList<>();
-    final LiveData<PlaceResponse.Place> placeLiveData = Transformations.switchMap(searchLiveData,
+    final LiveData<List<PlaceResponse.Place>> placeLiveData = Transformations.switchMap(searchLiveData,
             input -> Repository.getInstance().searchPlaces(input));
 
     public void searchPlaces(String query) {
