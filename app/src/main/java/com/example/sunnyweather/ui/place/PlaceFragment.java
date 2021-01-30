@@ -16,11 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.sunnyweather.R;
 import com.example.sunnyweather.logic.model.PlaceResponse;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -127,9 +129,17 @@ public class PlaceFragment extends Fragment {
                 }
             }
         });
-//        placeViewModel.placeLiveData.observe(this, result -> {
-//
-//        });
+        placeViewModel.placeLiveData.observe(Objects.requireNonNull(this.getActivity()), result -> {
+            if (result != null) {
+                placeRecyclerView.setVisibility(View.VISIBLE);
+                bgImageView.setVisibility(View.GONE);
+                placeViewModel.placeList.clear();
+                placeViewModel.placeList.addAll(result);
+                adapter.notifyDataSetChanged();
+            } else {
+                Toast.makeText(getActivity(), "未能查询到任何地点", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 }
