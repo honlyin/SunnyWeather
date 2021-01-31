@@ -1,8 +1,5 @@
 package com.example.sunnyweather.ui.place;
 
-import android.util.Log;
-
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -21,7 +18,7 @@ public class PlaceViewModel extends ViewModel {
     final List<PlaceResponse.Place> placeList = new ArrayList<>();
     final LiveData<List<PlaceResponse.Place>> placeLiveData = Transformations.switchMap(searchLiveData,
             input -> {
-                Log.d(TAG, "apply: input = " + input);
+                LogUtils.d(TAG, "apply: input = " + input);
                 return Repository.getInstance().searchPlaces(input);
             });
 
