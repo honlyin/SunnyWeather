@@ -25,8 +25,7 @@ public class PlaceViewModel extends ViewModel {
     private final IQueryListener iQueryListener = new IQueryListener() {
         @Override
         public void success(List<PlaceResponse.Place> placeList) {
-            places.clear();
-            places.addAll(placeList);
+            responseLiveData.postValue(placeList);
             LogUtils.d(TAG, System.currentTimeMillis() + " success");
         }
 
@@ -37,15 +36,12 @@ public class PlaceViewModel extends ViewModel {
     };
 
     final LiveData<List<PlaceResponse.Place>> placeLiveData = Transformations.switchMap(searchLiveData,
-            new Function<String, LiveData<List<PlaceResponse.Place>>>() {
-                @Override
-                public LiveData<List<PlaceResponse.Place>> apply(String input) {
-                    LogUtils.d(TAG, "apply: input = " + input);
+            input -> {
+                LogUtils.d(TAG, "apply: input = " + input);
+                synchronized (PlaceViewModel.class) {
                     Repository.getInstance().searchPlaces(input, iQueryListener);
-                    LogUtils.d(TAG, System.currentTimeMillis() + "");
-                    responseLiveData.setValue(places);
-                    return responseLiveData;
                 }
+                return responseLiveData;
             });
 
     public void searchPlaces(String query) {

@@ -60,87 +60,87 @@ public class Repository {
 
     public void searchPlaces(String query, IQueryListener iQueryListener) {
         LogUtils.d(TAG, "searchPlaces: query = " + query);
-        MutableLiveData<List<PlaceResponse.Place>> responseLiveData = new MutableLiveData<>();
-//        new Thread() {
-//            @Override
-//            public void run() {
-//        Cursor cursor = resolver.query(CONTENT_URIS, null, null, null, null);
-        List<PlaceResponse.Place> placeList = new ArrayList<>();
-//        if (cursor != null) {
-//            if (cursor.moveToFirst()) {
-//                int[] index = new int[]{
-//                        cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LNG),
-//                        cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LAT),
-//                        cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_PROVINCE),
-//                        cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_DISTRICT),
-//                        cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_FORMATTED_ADDRESS),
-//                };
-//                do {
-//                    if (cursor.getString(index[2]).contains(query) || cursor.getString(index[3]).contains(query)) {
-//                        LogUtils.d(TAG, "get Database");
-//                        PlaceResponse.Location location = new PlaceResponse.Location();
-//                        location.setLongitude(cursor.getString(index[0]));
-//                        location.setLatitude(cursor.getString(index[1]));
-//                        placeList.add(new PlaceResponse.Place(cursor.getString(index[2]), location, cursor.getString(index[4])));
+//        MutableLiveData<List<PlaceResponse.Place>> responseLiveData = new MutableLiveData<>();
+        new Thread() {
+            @Override
+            public void run() {
+//                Cursor cursor = resolver.query(CONTENT_URIS, null, null, null, null);
+                List<PlaceResponse.Place> placeList = new ArrayList<>();
+//                if (cursor != null) {
+//                    if (cursor.moveToFirst()) {
+//                        int[] index = new int[]{
+//                                cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LNG),
+//                                cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LAT),
+//                                cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_PROVINCE),
+//                                cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_DISTRICT),
+//                                cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_FORMATTED_ADDRESS),
+//                        };
+//                        do {
+//                            if (cursor.getString(index[2]).contains(query) || cursor.getString(index[3]).contains(query)) {
+//                                LogUtils.d(TAG, "get Database");
+//                                PlaceResponse.Location location = new PlaceResponse.Location();
+//                                location.setLongitude(cursor.getString(index[0]));
+//                                location.setLatitude(cursor.getString(index[1]));
+//                                placeList.add(new PlaceResponse.Place(cursor.getString(index[2]), location, cursor.getString(index[4])));
+//                            }
+//                        } while (cursor.moveToNext());
 //                    }
-//                } while (cursor.moveToNext());
-//            }
-//            cursor.close();
-//        }
-        if (placeList.size() == 0) {
-            LogUtils.d(TAG, "getAssert");
-            InputStreamReader is = null;
-            try {
-                is = new InputStreamReader(
-                        SunnyWeatherApplication.getContext().getAssets().open("place_location.csv"));
-                BufferedReader bufferedReader = new BufferedReader(is);
-                bufferedReader.readLine();
-                String line;
-                boolean isFind = false;
-                while ((line = bufferedReader.readLine()) != null) {
-                    String[] placeInfos = line.split(",");
-                    LogUtils.d(TAG, Arrays.toString(placeInfos));
-                    if (placeInfos[3].contains(query) || placeInfos[4].contains(query)) {
-                        if (!isFind) {
-                            isFind = true;
-                        }
-//                        ContentValues values = new ContentValues();
-//                        values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_ENTRY_ID, placeInfos[0]);
-//                        values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LNG, placeInfos[1]);
-//                        values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LAT, placeInfos[2]);
-//                        values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_PROVINCE, placeInfos[3]);
-//                        values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_CITY, placeInfos[4]);
-//                        values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_DISTRICT, placeInfos[5]);
-//                        values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_FORMATTED_ADDRESS, placeInfos[6]);
-//                        LogUtils.d(TAG, "insert");
-//                        resolver.insert(CONTENT_URIS, values);
+//                    cursor.close();
+//                }
+                if (placeList.size() == 0) {
+                    LogUtils.d(TAG, "getAssert");
+                    InputStreamReader is = null;
+                    try {
+                        is = new InputStreamReader(
+                                SunnyWeatherApplication.getContext().getAssets().open("place_location.csv"));
+                        BufferedReader bufferedReader = new BufferedReader(is);
+                        bufferedReader.readLine();
+                        String line;
+                        boolean isFind = false;
+                        while ((line = bufferedReader.readLine()) != null) {
+                            String[] placeInfos = line.split(",");
+                            LogUtils.d(TAG, Arrays.toString(placeInfos));
+                            if (placeInfos[3].contains(query) || placeInfos[4].contains(query)) {
+                                if (!isFind) {
+                                    isFind = true;
+                                }
+//                                ContentValues values = new ContentValues();
+//                                values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_ENTRY_ID, placeInfos[0]);
+//                                values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LNG, placeInfos[1]);
+//                                values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LAT, placeInfos[2]);
+//                                values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_PROVINCE, placeInfos[3]);
+//                                values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_CITY, placeInfos[4]);
+//                                values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_DISTRICT, placeInfos[5]);
+//                                values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_FORMATTED_ADDRESS, placeInfos[6]);
+//                                LogUtils.d(TAG, "insert");
+//                                resolver.insert(CONTENT_URIS, values);
 
-                        PlaceResponse.Location location = new PlaceResponse.Location();
-                        location.setLongitude(placeInfos[1]);
-                        location.setLatitude(placeInfos[2]);
-                        placeList.add(new PlaceResponse.Place(placeInfos[3], location, placeInfos[6]));
-                    } else {
-                        if (!query.equals(placeInfos[3])) {
-                            if (isFind) {
-                                break;
+                                PlaceResponse.Location location = new PlaceResponse.Location();
+                                location.setLongitude(placeInfos[1]);
+                                location.setLatitude(placeInfos[2]);
+                                placeList.add(new PlaceResponse.Place(placeInfos[3], location, placeInfos[6]));
+                            } else {
+                                if (!query.equals(placeInfos[3])) {
+                                    if (isFind) {
+                                        break;
+                                    }
+                                }
                             }
                         }
+
+                    } catch (IOException e) {
+                        LogUtils.e(TAG, e.toString());
                     }
                 }
+                if (placeList.size() == 0) {
+                    iQueryListener.failed("data is null");
+                } else {
+                    LogUtils.d(TAG, "size = " + placeList.size());
+                    iQueryListener.success(placeList);
 
-            } catch (IOException e) {
-                LogUtils.e(TAG, e.toString());
+                }
             }
-        }
-        if (placeList.size() == 0) {
-            iQueryListener.failed("data is null");
-        } else {
-            LogUtils.d(TAG, "size = " + placeList.size());
-            iQueryListener.success(placeList);
-
-        }
-//            }
-//        }.start();
+        }.start();
 
 //        new Thread() {
 //            @Override
