@@ -135,15 +135,21 @@ public class PlaceFragment extends Fragment {
             }
         });
         placeViewModel.placeLiveData.observe(Objects.requireNonNull(this.getActivity()), result -> {
-            Log.d(TAG, "initListener: placeLiveData.observe ");
+            LogUtils.d(TAG, "initListener: placeLiveData.observe ");
             if (result != null) {
-                placeRecyclerView.setVisibility(View.VISIBLE);
-                bgImageView.setVisibility(View.GONE);
                 placeViewModel.placeList.clear();
                 placeViewModel.placeList.addAll(result);
+                LogUtils.d(TAG, "observe placeList = " + placeViewModel.placeList.size());
+                if (placeViewModel.placeList.size() != 0) {
+                    placeRecyclerView.setVisibility(View.VISIBLE);
+                    bgImageView.setVisibility(View.GONE);
+                } else {
+                    Toast.makeText(PlaceFragment.this.getActivity(), "未能查询到任何地点", Toast.LENGTH_SHORT).show();
+                }
                 adapter.notifyDataSetChanged();
             } else {
-                Toast.makeText(getActivity(), "未能查询到任何地点", Toast.LENGTH_SHORT).show();
+                LogUtils.d(TAG, "initListener: placeLiveData.observe null");
+                Toast.makeText(PlaceFragment.this.getActivity(), "未能查询到任何地点", Toast.LENGTH_SHORT).show();
             }
         });
 

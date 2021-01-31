@@ -1,5 +1,5 @@
 package com.example.sunnyweather.logic.network;
 
-interface IPlaceModel {
+public interface IPlaceModel {
     void searchPlaces(String query, ILoadListener loadListener);
 }

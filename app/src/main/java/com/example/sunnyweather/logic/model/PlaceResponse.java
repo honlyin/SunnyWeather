@@ -30,6 +30,12 @@ public class PlaceResponse {
         @SerializedName(value = "formatted_address")
         String address;
 
+        public Place(String name, Location location, String address) {
+            this.name = name;
+            this.location = location;
+            this.address = address;
+        }
+
         public String getName() {
             return name;
         }

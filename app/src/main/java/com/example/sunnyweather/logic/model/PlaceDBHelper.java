@@ -14,7 +14,7 @@ public class PlaceDBHelper extends SQLiteOpenHelper {
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + PlaceReaderContract.PlaceEntry.TABLE_NAME + "(" +
+            "CREATE TABLE " + PlaceReaderContract.PlaceEntry.TABLE_NAME + " (" +
                     PlaceReaderContract.PlaceEntry._ID + " INTEGER PRIMARY KEY autoincrement," +
                     PlaceReaderContract.PlaceEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
                     PlaceReaderContract.PlaceEntry.COLUMN_NAME_LNG + TEXT_TYPE + COMMA_SEP +
@@ -22,7 +22,7 @@ public class PlaceDBHelper extends SQLiteOpenHelper {
                     PlaceReaderContract.PlaceEntry.COLUMN_NAME_PROVINCE + TEXT_TYPE + COMMA_SEP +
                     PlaceReaderContract.PlaceEntry.COLUMN_NAME_CITY + TEXT_TYPE + COMMA_SEP +
                     PlaceReaderContract.PlaceEntry.COLUMN_NAME_DISTRICT + TEXT_TYPE + COMMA_SEP +
-                    PlaceReaderContract.PlaceEntry.COLUMN_NAME_FORMATTED_ADDRESS + TEXT_TYPE + COMMA_SEP + ")";
+                    PlaceReaderContract.PlaceEntry.COLUMN_NAME_FORMATTED_ADDRESS + TEXT_TYPE + " UNIQUE ON CONFLICT REPLACE "+ " )";
 
 
     public PlaceDBHelper(@Nullable Context context) {

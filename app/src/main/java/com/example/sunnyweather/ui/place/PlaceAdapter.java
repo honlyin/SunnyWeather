@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sunnyweather.R;
 import com.example.sunnyweather.logic.model.PlaceResponse;
+import com.example.sunnyweather.utils.LogUtils;
 
 import java.util.List;
 
 public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> {
+    private static final String TAG = "PlaceAdapter";
     private final List<PlaceResponse.Place> placeList;
 
 
@@ -32,6 +34,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        LogUtils.d(TAG, "onBindViewHolder");
         final PlaceResponse.Place place = placeList.get(position);
         holder.placeName.setText(place.getName());
         holder.placeAddress.setText(place.getAddress());
@@ -39,7 +42,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return 0;
+        return placeList == null ? 0 : placeList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

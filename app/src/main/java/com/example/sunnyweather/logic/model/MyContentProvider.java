@@ -33,7 +33,7 @@ public class MyContentProvider extends ContentProvider {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         //  为friends表添加匹配的uri，当匹配时返回后面的整数值
         sUriMatcher.addURI(AUTHORITY, File.separator + TABLE_NAME, ALL_PLACES);
-        sUriMatcher.addURI(AUTHORITY, File.separator + TABLE_NAME + "/*", ONE_PLACE);
+        sUriMatcher.addURI(AUTHORITY, File.separator + TABLE_NAME + "/#", ONE_PLACE);
 
     }
 
