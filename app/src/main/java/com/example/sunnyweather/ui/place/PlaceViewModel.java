@@ -19,7 +19,6 @@ public class PlaceViewModel extends ViewModel {
     private final MutableLiveData<String> searchLiveData = new MutableLiveData<>();
     final List<PlaceResponse.Place> placeList = new ArrayList<>();
     MutableLiveData<List<PlaceResponse.Place>> responseLiveData = new MutableLiveData<>();
-    private final List<PlaceResponse.Place> places = new ArrayList<>();
 
 
     private final IQueryListener iQueryListener = new IQueryListener() {
