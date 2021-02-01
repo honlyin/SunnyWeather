@@ -8,7 +8,7 @@ import android.net.Uri;
 import com.example.sunnyweather.SunnyWeatherApplication;
 import com.example.sunnyweather.logic.model.db.MyContentProvider;
 import com.example.sunnyweather.logic.model.db.PlaceReaderContract;
-import com.example.sunnyweather.logic.model.place.PlaceResponse;
+import com.example.sunnyweather.logic.model.PlaceResponse;
 import com.example.sunnyweather.logic.network.ILoadListener;
 import com.example.sunnyweather.logic.network.place.IQueryListener;
 import com.example.sunnyweather.utils.LogUtils;

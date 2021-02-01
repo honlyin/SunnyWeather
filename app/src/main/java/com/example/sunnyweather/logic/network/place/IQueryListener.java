@@ -1,6 +1,6 @@
 package com.example.sunnyweather.logic.network.place;
 
-import com.example.sunnyweather.logic.model.place.PlaceResponse;
+import com.example.sunnyweather.logic.model.PlaceResponse;
 
 import java.util.List;
 

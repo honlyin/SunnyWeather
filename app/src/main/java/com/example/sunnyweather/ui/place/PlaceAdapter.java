@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sunnyweather.R;
-import com.example.sunnyweather.logic.model.place.PlaceResponse;
+import com.example.sunnyweather.logic.model.PlaceResponse;
 import com.example.sunnyweather.utils.LogUtils;
 
 import java.util.List;
