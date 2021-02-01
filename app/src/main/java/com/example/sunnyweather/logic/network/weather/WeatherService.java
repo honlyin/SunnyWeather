@@ -8,7 +8,9 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface WeatherService {
-    @GET("v2.5" + SunnyWeatherApplication.TOKEN + "/{lng},{lat}/realtime.json")
+    @GET("v2.5/" + SunnyWeatherApplication.TOKEN + "/{lng},{lat}/realtime.json")
     Call<RealTimeResponse> getRealTimeWeather(@Path("lng") String lng, @Path("lat") String lat);
 
+    @GET("v2.5/" + SunnyWeatherApplication.TOKEN + "/{lng},{lat}/daily.json")
+    Call<RealTimeResponse> getDailyWeather(@Path("lng") String lng, @Path("lat") String lat);
 }

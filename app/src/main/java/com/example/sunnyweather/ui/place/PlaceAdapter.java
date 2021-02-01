@@ -18,7 +18,7 @@ import java.util.List;
 public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> {
     private static final String TAG = "PlaceAdapter";
     private final List<PlaceResponse.Place> placeList;
-
+    private OnItemClickListener onItemClickListener = null;
 
     public PlaceAdapter(Fragment fragment, List<PlaceResponse.Place> list) {
         placeList = list;
@@ -38,6 +38,14 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         final PlaceResponse.Place place = placeList.get(position);
         holder.placeName.setText(place.getName());
         holder.placeAddress.setText(place.getAddress());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemListener(place);
+                }
+            }
+        });
     }
 
     @Override
@@ -45,14 +53,25 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         return placeList == null ? 0 : placeList.size();
     }
 
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView placeName;
         TextView placeAddress;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             placeName = itemView.findViewById(R.id.placeName);
             placeAddress = itemView.findViewById(R.id.placeAddress);
+
         }
+
+    }
+
+    public interface OnItemClickListener {
+        void onItemListener(PlaceResponse.Place place);
     }
 }

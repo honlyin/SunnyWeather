@@ -5,12 +5,16 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.sunnyweather.SunnyWeatherApplication;
+import com.example.sunnyweather.logic.model.RealTimeResponse;
 import com.example.sunnyweather.logic.model.db.MyContentProvider;
 import com.example.sunnyweather.logic.model.db.PlaceReaderContract;
 import com.example.sunnyweather.logic.model.PlaceResponse;
 import com.example.sunnyweather.logic.network.ILoadListener;
 import com.example.sunnyweather.logic.network.place.IQueryListener;
+import com.example.sunnyweather.logic.network.weather.WeatherNetwork;
 import com.example.sunnyweather.utils.LogUtils;
 
 import java.io.BufferedReader;
@@ -24,10 +28,12 @@ public class Repository {
     private static final String TAG = "Repository";
     private static Repository repository;
     private PlaceResponse mPlaceResponse;
-    private ContentResolver resolver;
+    private RealTimeResponse.RealTime mRealTime;
+    private final ContentResolver resolver;
     private final static Uri CONTENT_URIS = Uri.parse("content://" +
             MyContentProvider.AUTHORITY + "/" +
             PlaceReaderContract.PlaceEntry.TABLE_NAME);
+    private final MutableLiveData<RealTimeResponse.RealTime> realTimeMutableLiveData = new MutableLiveData<>();
 
     private Repository() {
         resolver = SunnyWeatherApplication.getContext().getContentResolver();
@@ -43,8 +49,12 @@ public class Repository {
 
     private final ILoadListener loadListener = new ILoadListener() {
         @Override
-        public void success(PlaceResponse placeResponse) {
-            mPlaceResponse = placeResponse;
+        public void success(Object response) {
+            LogUtils.d(TAG, "response = " + response);
+            if (response instanceof RealTimeResponse) {
+                mRealTime = ((RealTimeResponse) response).getResult().getRealTime();
+                realTimeMutableLiveData.postValue(mRealTime);
+            }
         }
 
         @Override
@@ -87,7 +97,7 @@ public class Repository {
                 }
                 if (placeList.size() == 0) {
                     //数据库查询为空时进行文档查询
-                    InputStreamReader is = null;
+                    InputStreamReader is;
                     try {
                         is = new InputStreamReader(
                                 SunnyWeatherApplication.getContext().getAssets().open("place_location.csv"));
@@ -113,9 +123,8 @@ public class Repository {
                                 } else {
                                     address = placeInfos[3] + ", " + placeInfos[4] + ", " + placeInfos[5];
                                 }
-                                if (placeInfos[4].equals("") || placeInfos[5].equals("")){
+                                if (placeInfos[4].equals("") || placeInfos[5].equals(""))
                                     address = placeInfos[6];
-                                }
                                 LogUtils.d(TAG, "address = " + address.trim());
                                 values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_FORMATTED_ADDRESS, address.trim());
                                 LogUtils.d(TAG, "insert");
@@ -155,5 +164,12 @@ public class Repository {
 //        }.start();
     }
 
+    public MutableLiveData<RealTimeResponse.RealTime> refreshWeather(String lng, String lat) {
+
+        new Thread(() -> {
+            WeatherNetwork.getInstance().getRealtimeWeather(lng, lat, loadListener);
+        }).start();
+        return realTimeMutableLiveData;
+    }
 
 }

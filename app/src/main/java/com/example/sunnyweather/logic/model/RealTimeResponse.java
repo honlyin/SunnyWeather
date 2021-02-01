@@ -1,8 +1,25 @@
 package com.example.sunnyweather.logic.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class RealTimeResponse {
+    Result result;
+
+    public Result getResult() {
+        return result;
+    }
+
+    public void setResult(Result result) {
+        this.result = result;
+    }
+
     public static class Result {
+        @SerializedName("realtime")
         RealTime realTime;
+
+        public RealTime getRealTime() {
+            return realTime;
+        }
 
         public void setRealTime(RealTime realTime) {
             this.realTime = realTime;
@@ -17,7 +34,9 @@ public class RealTimeResponse {
         Wind wind;
         float pressure;
         float apparent_temperature;
+        @SerializedName("air_quality")
         AirQuality airQuality;
+        @SerializedName("life_index")
         LifeIndex lifeIndex;
 
         public float getTemperature() {

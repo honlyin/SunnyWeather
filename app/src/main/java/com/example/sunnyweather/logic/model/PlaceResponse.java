@@ -80,6 +80,7 @@ public class PlaceResponse {
         public void setLat(String lat) {
             this.lat = lat;
         }
+
     }
 
 }
