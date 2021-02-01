@@ -119,7 +119,7 @@ public class PlaceFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 LogUtils.d(TAG, "afterTextChanged: ");
-                final String content = s.toString();
+                final String content = s.toString().trim();
                 if (content.length() < 2) {
                     placeRecyclerView.setVisibility(View.GONE);
                     bgImageView.setVisibility(View.VISIBLE);

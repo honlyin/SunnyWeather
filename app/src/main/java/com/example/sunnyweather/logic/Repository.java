@@ -113,6 +113,9 @@ public class Repository {
                                 } else {
                                     address = placeInfos[3] + ", " + placeInfos[4] + ", " + placeInfos[5];
                                 }
+                                if (placeInfos[4].equals("") || placeInfos[5].equals("")){
+                                    address = placeInfos[6];
+                                }
                                 LogUtils.d(TAG, "address = " + address.trim());
                                 values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_FORMATTED_ADDRESS, address.trim());
                                 LogUtils.d(TAG, "insert");
