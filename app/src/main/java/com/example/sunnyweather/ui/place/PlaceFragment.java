@@ -4,14 +4,12 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +18,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.sunnyweather.R;
-import com.example.sunnyweather.logic.model.PlaceResponse;
 import com.example.sunnyweather.utils.LogUtils;
 
-import java.util.List;
 import java.util.Objects;
 
 /**

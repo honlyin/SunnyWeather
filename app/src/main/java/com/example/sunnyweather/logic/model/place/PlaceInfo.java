@@ -1,4 +1,4 @@
-package com.example.sunnyweather.logic.model;
+package com.example.sunnyweather.logic.model.place;
 
 public class PlaceInfo {
     private String adcode;

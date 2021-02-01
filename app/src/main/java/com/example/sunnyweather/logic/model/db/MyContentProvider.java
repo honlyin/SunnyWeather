@@ -1,4 +1,4 @@
-package com.example.sunnyweather.logic.model;
+package com.example.sunnyweather.logic.model.db;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -12,7 +12,7 @@ import com.example.sunnyweather.utils.LogUtils;
 
 import java.io.File;
 
-import static com.example.sunnyweather.logic.model.PlaceReaderContract.PlaceEntry.TABLE_NAME;
+import static com.example.sunnyweather.logic.model.db.PlaceReaderContract.PlaceEntry.TABLE_NAME;
 
 public class MyContentProvider extends ContentProvider {
 

@@ -1,8 +1,10 @@
-package com.example.sunnyweather.logic.network;
+package com.example.sunnyweather.logic.network.place;
 
 import androidx.annotation.NonNull;
 
-import com.example.sunnyweather.logic.model.PlaceResponse;
+import com.example.sunnyweather.logic.model.place.PlaceResponse;
+import com.example.sunnyweather.logic.network.ILoadListener;
+import com.example.sunnyweather.logic.network.ServiceCreator;
 import com.example.sunnyweather.utils.LogUtils;
 
 import retrofit2.Call;

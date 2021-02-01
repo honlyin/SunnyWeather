@@ -1,14 +1,13 @@
 package com.example.sunnyweather.ui.place;
 
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.example.sunnyweather.logic.Repository;
-import com.example.sunnyweather.logic.model.PlaceResponse;
-import com.example.sunnyweather.logic.network.IQueryListener;
+import com.example.sunnyweather.logic.model.place.PlaceResponse;
+import com.example.sunnyweather.logic.network.place.IQueryListener;
 import com.example.sunnyweather.utils.LogUtils;
 
 import java.util.ArrayList;

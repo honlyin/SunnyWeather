@@ -1,4 +1,4 @@
-package com.example.sunnyweather.logic.model;
+package com.example.sunnyweather.logic.model.db;
 
 import android.provider.BaseColumns;
 

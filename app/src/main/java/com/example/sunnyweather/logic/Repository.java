@@ -1,25 +1,18 @@
 package com.example.sunnyweather.logic;
 
 import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
-
-import androidx.lifecycle.MutableLiveData;
 
 import com.example.sunnyweather.SunnyWeatherApplication;
-import com.example.sunnyweather.logic.model.MyContentProvider;
-import com.example.sunnyweather.logic.model.PlaceReaderContract;
-import com.example.sunnyweather.logic.model.PlaceResponse;
+import com.example.sunnyweather.logic.model.db.MyContentProvider;
+import com.example.sunnyweather.logic.model.db.PlaceReaderContract;
+import com.example.sunnyweather.logic.model.place.PlaceResponse;
 import com.example.sunnyweather.logic.network.ILoadListener;
-import com.example.sunnyweather.logic.network.IQueryListener;
-import com.example.sunnyweather.logic.network.SunnyWeatherNetworkUtil;
+import com.example.sunnyweather.logic.network.place.IQueryListener;
 import com.example.sunnyweather.utils.LogUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;

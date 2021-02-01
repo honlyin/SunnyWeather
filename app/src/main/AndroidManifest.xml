@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <provider
-            android:name=".logic.model.MyContentProvider"
+            android:name=".logic.model.db.MyContentProvider"
             android:authorities="com.example.sunnyweather.MyContentProvider"
             android:enabled="true"
             android:exported="true"/>

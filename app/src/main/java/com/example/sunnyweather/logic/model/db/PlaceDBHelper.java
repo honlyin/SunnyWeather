@@ -1,11 +1,9 @@
-package com.example.sunnyweather.logic.model;
+package com.example.sunnyweather.logic.model.db;
 
 import android.content.Context;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class PlaceDBHelper extends SQLiteOpenHelper {
