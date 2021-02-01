@@ -107,9 +107,11 @@ public class PlaceFragment extends Fragment {
 
     private void initListener() {
         searchPlaceEdit.addTextChangedListener(new TextWatcher() {
+            private String query;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                query = s.toString().trim();
             }
 
             @Override
@@ -120,13 +122,13 @@ public class PlaceFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 LogUtils.d(TAG, "afterTextChanged: ");
                 final String content = s.toString().trim();
-                if (content.length() < 2) {
+                if (content.length() >= 2 && !query.equals(content)) {
+                    placeViewModel.searchPlaces(content);
+                } else {
                     placeRecyclerView.setVisibility(View.GONE);
                     bgImageView.setVisibility(View.VISIBLE);
                     placeViewModel.placeList.clear();
                     adapter.notifyDataSetChanged();
-                } else {
-                    placeViewModel.searchPlaces(content);
                 }
             }
         });
