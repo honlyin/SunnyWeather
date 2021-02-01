@@ -109,8 +109,8 @@ public class Repository {
 //                                resolver.insert(CONTENT_URIS, values);
 
                                 PlaceResponse.Location location = new PlaceResponse.Location();
-                                location.setLongitude(placeInfos[1]);
-                                location.setLatitude(placeInfos[2]);
+                                location.setLng(placeInfos[1]);
+                                location.setLat(placeInfos[2]);
                                 placeList.add(new PlaceResponse.Place(placeInfos[3], location, placeInfos[6]));
                             } else {
                                 if (!query.equals(placeInfos[3])) {

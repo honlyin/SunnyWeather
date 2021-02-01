@@ -62,23 +62,23 @@ public class PlaceResponse {
     }
 
     public static class Location {
-        String longitude;
-        String latitude;
+        String lng;
+        String lat;
 
-        public String getLongitude() {
-            return longitude;
+        public String getLng() {
+            return lng;
         }
 
-        public void setLongitude(String longitude) {
-            this.longitude = longitude;
+        public void setLng(String lng) {
+            this.lng = lng;
         }
 
-        public String getLatitude() {
-            return latitude;
+        public String getLat() {
+            return lat;
         }
 
-        public void setLatitude(String latitude) {
-            this.latitude = latitude;
+        public void setLat(String lat) {
+            this.lat = lat;
         }
     }
 
