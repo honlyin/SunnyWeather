@@ -29,6 +29,7 @@ public class PlaceViewModel extends ViewModel {
 
         @Override
         public void failed(String error) {
+            responseLiveData.postValue(null);
             LogUtils.d(TAG, error);
         }
     };
