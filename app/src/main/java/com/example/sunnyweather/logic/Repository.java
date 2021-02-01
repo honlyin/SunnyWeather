@@ -60,6 +60,7 @@ public class Repository {
             @Override
             public void run() {
                 List<PlaceResponse.Place> placeList = new ArrayList<>();
+                //数据库查询
                 Cursor cursor = resolver.query(CONTENT_URIS, null, null, null, null);
                 if (cursor != null) {
                     if (cursor.moveToFirst()) {
@@ -73,7 +74,7 @@ public class Repository {
                         };
                         do {
                             if (cursor.getString(index[3]).contains(query)
-                                    || cursor.getString(index[4]).contains(query)) {
+                                    || cursor.getString(index[4]).contains(query)) {//根据市级以及区级进行地址查询
                                 LogUtils.d(TAG, "get Database");
                                 PlaceResponse.Location location = new PlaceResponse.Location();
                                 location.setLng(cursor.getString(index[0]));
@@ -85,7 +86,7 @@ public class Repository {
                     cursor.close();
                 }
                 if (placeList.size() == 0) {
-                    LogUtils.d(TAG, "getAssert");
+                    //数据库查询为空时进行文档查询
                     InputStreamReader is = null;
                     try {
                         is = new InputStreamReader(
@@ -97,7 +98,8 @@ public class Repository {
                             String[] placeInfos = line.split(",");
                             LogUtils.d(TAG, Arrays.toString(placeInfos));
                             if (placeInfos[4].contains(query)
-                                    || placeInfos[5].contains(query)) {
+                                    || placeInfos[5].contains(query)) {//根据市级以及区级进行地址查询
+                                //将信息加入数据库缓存
                                 ContentValues values = new ContentValues();
                                 values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_ENTRY_ID, placeInfos[0]);
                                 values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LNG, placeInfos[1]);
