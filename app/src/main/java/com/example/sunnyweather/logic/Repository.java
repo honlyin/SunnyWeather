@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.sunnyweather.SunnyWeatherApplication;
 import com.example.sunnyweather.logic.model.RealTimeResponse;
+import com.example.sunnyweather.logic.model.WeatherResponse;
 import com.example.sunnyweather.logic.model.db.MyContentProvider;
 import com.example.sunnyweather.logic.model.db.PlaceReaderContract;
 import com.example.sunnyweather.logic.model.PlaceResponse;
@@ -37,6 +38,7 @@ public class Repository {
             MyContentProvider.AUTHORITY + "/" +
             PlaceReaderContract.PlaceEntry.TABLE_NAME);
     private final MutableLiveData<RealTimeResponse.RealTime> realTimeMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<WeatherResponse.Result> resultMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<PlaceResponse.Place>> placeListLiveData = new MutableLiveData<>();
 
     private Repository() {
@@ -57,6 +59,9 @@ public class Repository {
             LogUtils.d(TAG, "response = " + response);
             if (response instanceof RealTimeResponse) {
                 realTimeMutableLiveData.postValue(((RealTimeResponse) response).getResult().getRealTime());
+            }
+            if (response instanceof WeatherResponse) {
+                resultMutableLiveData.postValue(((WeatherResponse) response).getResult());
             }
         }
 
@@ -151,6 +156,13 @@ public class Repository {
         singleThreadExecutor.execute(() ->
                 WeatherNetwork.getInstance().getRealtimeWeather(lng, lat, loadListener));
         return realTimeMutableLiveData;
+    }
+
+    public MutableLiveData<WeatherResponse.Result> getWeather(String lng, String lat) {
+
+        singleThreadExecutor.execute(() ->
+                WeatherNetwork.getInstance().getWeatherResponse(lng, lat, loadListener));
+        return resultMutableLiveData;
     }
 
 }

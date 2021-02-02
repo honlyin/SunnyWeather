@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.sunnyweather.R;
 import com.example.sunnyweather.logic.model.PlaceResponse;
 import com.example.sunnyweather.logic.model.RealTimeResponse;
+import com.example.sunnyweather.logic.model.WeatherResponse;
 import com.example.sunnyweather.ui.weather.RealTimeViewModel;
 import com.example.sunnyweather.utils.LogUtils;
 
@@ -160,6 +161,16 @@ public class PlaceFragment extends Fragment {
                 LogUtils.d(TAG, " pressure = " + realTime.getPressure() + " temperature = " + realTime.getTemperature());
             } else {
                 LogUtils.d(TAG, "未能查询到天气情报");
+            }
+        });
+        realTimeViewModel.resultLiveData.observe(this.getActivity(), new Observer<WeatherResponse.Result>() {
+            @Override
+            public void onChanged(WeatherResponse.Result result) {
+                if (result != null) {
+                    LogUtils.d(TAG, "temp = " + result.getDailyResponse().getTemperatureList().get(0));
+                } else {
+                    LogUtils.d(TAG, "未能查询到未来天气情报");
+                }
             }
         });
 

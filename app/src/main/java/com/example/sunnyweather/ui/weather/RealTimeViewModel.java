@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.sunnyweather.logic.Repository;
 import com.example.sunnyweather.logic.model.PlaceResponse;
 import com.example.sunnyweather.logic.model.RealTimeResponse;
+import com.example.sunnyweather.logic.model.WeatherResponse;
 import com.example.sunnyweather.logic.network.weather.WeatherNetwork;
 import com.example.sunnyweather.utils.LogUtils;
 
@@ -20,6 +21,9 @@ public class RealTimeViewModel extends ViewModel {
 
     public final LiveData<RealTimeResponse.RealTime> realTimeLiveData = Transformations.switchMap(searchLiveData,
             input -> Repository.getInstance().refreshWeather(input.getLng(), input.getLat()));
+
+    public final LiveData<WeatherResponse.Result> resultLiveData = Transformations.switchMap(searchLiveData,
+            input -> Repository.getInstance().getWeather(input.getLng(), input.getLat()));
 
     public void searchPlaces(PlaceResponse.Location location) {
         searchLiveData.setValue(location);

@@ -3,6 +3,7 @@ package com.example.sunnyweather.logic.network.weather;
 import androidx.annotation.NonNull;
 
 import com.example.sunnyweather.logic.model.RealTimeResponse;
+import com.example.sunnyweather.logic.model.WeatherResponse;
 import com.example.sunnyweather.logic.network.ILoadListener;
 import com.example.sunnyweather.logic.network.ServiceCreator;
 
@@ -37,15 +38,35 @@ public class WeatherNetwork {
                 if (response.body() != null) {
                     iLoadListener.success(response.body());
                 } else {
-                    iLoadListener.failed("realTime is null");
+                    iLoadListener.failed("实时天气数据为空！");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<RealTimeResponse> call, @NonNull Throwable t) {
-                iLoadListener.failed(t.toString());
+                iLoadListener.failed("实时天气" + t.toString());
             }
 
+        });
+    }
+
+    public void getWeatherResponse(String lng, String lat, ILoadListener iLoadListener) {
+        Call<WeatherResponse> weatherResponseCall = weatherService.getWeather(lng, lat);
+        weatherResponseCall.enqueue(new Callback<WeatherResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<WeatherResponse> call, @NonNull Response<WeatherResponse> response) {
+                if (response.body() != null) {
+                    iLoadListener.success(response.body());
+                } else {
+                    iLoadListener.failed("天气预报数据为空！");
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<WeatherResponse> call, @NonNull Throwable t) {
+                iLoadListener.failed("预报天气" + t.toString());
+            }
         });
     }
 
