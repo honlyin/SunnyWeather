@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +96,7 @@ public class PlaceFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        LogUtils.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
         placeViewModel = new ViewModelProvider(this).get(PlaceViewModel.class);
         realTimeViewModel = new ViewModelProvider(this).get(RealTimeViewModel.class);

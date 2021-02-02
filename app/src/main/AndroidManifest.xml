@@ -12,11 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.WeatherActivity"></activity>
+
         <provider
             android:name=".logic.model.db.MyContentProvider"
             android:authorities="com.example.sunnyweather.MyContentProvider"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
 
         <activity android:name=".ui.MainActivity">
             <intent-filter>

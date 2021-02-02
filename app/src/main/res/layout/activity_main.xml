@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-  <fragment
+  <FrameLayout
       android:id="@+id/replaceFragment"
       android:name="com.example.sunnyweather.ui.place.PlaceFragment"
       android:layout_width="match_parent"
