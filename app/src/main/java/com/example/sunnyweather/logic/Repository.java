@@ -71,30 +71,30 @@ public class Repository {
         singleThreadExecutor.execute(() -> {
             List<PlaceResponse.Place> placeList = new ArrayList<>();
             //数据库查询
-            Cursor cursor = resolver.query(CONTENT_URIS, null, null, null, null);
-            if (cursor != null) {
-                if (cursor.moveToFirst()) {
-                    int[] index = new int[]{
-                            cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LNG),
-                            cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LAT),
-                            cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_PROVINCE),
-                            cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_CITY),
-                            cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_DISTRICT),
-                            cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_FORMATTED_ADDRESS),
-                    };
-                    do {
-                        if (cursor.getString(index[3]).contains(query)
-                                || cursor.getString(index[4]).contains(query)) {//根据市级以及区级进行地址查询
-                            LogUtils.d(TAG, "get Database");
-                            PlaceResponse.Location location = new PlaceResponse.Location();
-                            location.setLng(cursor.getString(index[0]));
-                            location.setLat(cursor.getString(index[1]));
-                            placeList.add(new PlaceResponse.Place(cursor.getString(index[2]), location, cursor.getString(index[5])));
-                        }
-                    } while (cursor.moveToNext());
-                }
-                cursor.close();
-            }
+//            Cursor cursor = resolver.query(CONTENT_URIS, null, null, null, null);
+//            if (cursor != null) {
+//                if (cursor.moveToFirst()) {
+//                    int[] index = new int[]{
+//                            cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LNG),
+//                            cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LAT),
+//                            cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_PROVINCE),
+//                            cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_CITY),
+//                            cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_DISTRICT),
+//                            cursor.getColumnIndex(PlaceReaderContract.PlaceEntry.COLUMN_NAME_FORMATTED_ADDRESS),
+//                    };
+//                    do {
+//                        if (cursor.getString(index[3]).contains(query)
+//                                || cursor.getString(index[4]).contains(query)) {//根据市级以及区级进行地址查询
+//                            LogUtils.d(TAG, "get Database");
+//                            PlaceResponse.Location location = new PlaceResponse.Location();
+//                            location.setLng(cursor.getString(index[0]));
+//                            location.setLat(cursor.getString(index[1]));
+//                            placeList.add(new PlaceResponse.Place(cursor.getString(index[2]), location, cursor.getString(index[5])));
+//                        }
+//                    } while (cursor.moveToNext());
+//                }
+//                cursor.close();
+//            }
             if (placeList.size() == 0) {
                 //数据库查询为空时进行文档查询
                 InputStreamReader is;
@@ -107,29 +107,28 @@ public class Repository {
                     while ((line = bufferedReader.readLine()) != null) {
                         String[] placeInfos = line.split(",");
                         LogUtils.d(TAG, Arrays.toString(placeInfos));
+                        String address;
+                        if (placeInfos[4].equals(placeInfos[3])) {
+                            address = placeInfos[4] + ", " + placeInfos[5];
+                        } else {
+                            address = placeInfos[3] + ", " + placeInfos[4] + ", " + placeInfos[5];
+                        }
+                        if (placeInfos[4].equals("") || placeInfos[5].equals(""))
+                            address = placeInfos[placeInfos.length - 1];
+//                        ContentValues values = new ContentValues();
+//                        values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_ENTRY_ID, placeInfos[0]);
+//                        values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LNG, placeInfos[1]);
+//                        values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LAT, placeInfos[2]);
+//                        values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_PROVINCE, placeInfos[3]);
+//                        values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_CITY, placeInfos[4]);
+//                        values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_DISTRICT, placeInfos[5]);
+//                        LogUtils.d(TAG, "address = " + address.trim());
+//                        values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_FORMATTED_ADDRESS, address.trim());
+//                        LogUtils.d(TAG, "insert");
+//                        resolver.insert(CONTENT_URIS, values);
                         if (placeInfos[4].contains(query)
                                 || placeInfos[5].contains(query)) {//根据市级以及区级进行地址查询
                             //将信息加入数据库缓存
-                            ContentValues values = new ContentValues();
-                            values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_ENTRY_ID, placeInfos[0]);
-                            values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LNG, placeInfos[1]);
-                            values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_LAT, placeInfos[2]);
-                            values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_PROVINCE, placeInfos[3]);
-                            values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_CITY, placeInfos[4]);
-                            values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_DISTRICT, placeInfos[5]);
-                            String address;
-                            if (placeInfos[4].equals(placeInfos[3])) {
-                                address = placeInfos[4] + ", " + placeInfos[5];
-                            } else {
-                                address = placeInfos[3] + ", " + placeInfos[4] + ", " + placeInfos[5];
-                            }
-                            if (placeInfos[4].equals("") || placeInfos[5].equals(""))
-                                address = placeInfos[6];
-                            LogUtils.d(TAG, "address = " + address.trim());
-                            values.put(PlaceReaderContract.PlaceEntry.COLUMN_NAME_FORMATTED_ADDRESS, address.trim());
-                            LogUtils.d(TAG, "insert");
-                            resolver.insert(CONTENT_URIS, values);
-
                             PlaceResponse.Location location = new PlaceResponse.Location();
                             location.setLng(placeInfos[1]);
                             location.setLat(placeInfos[2]);
