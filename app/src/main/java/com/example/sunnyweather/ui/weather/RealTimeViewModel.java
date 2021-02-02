@@ -22,7 +22,6 @@ public class RealTimeViewModel extends ViewModel {
             input -> Repository.getInstance().refreshWeather(input.getLng(), input.getLat()));
 
     public void searchPlaces(PlaceResponse.Location location) {
-        LogUtils.d(TAG, "searchPlaces: query = " + location.getLat() + "," + location.getLng());
         searchLiveData.setValue(location);
     }
 }

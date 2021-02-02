@@ -101,7 +101,6 @@ public class PlaceFragment extends Fragment {
         placeRecyclerView.setLayoutManager(layoutManager);
         adapter = new PlaceAdapter(this, placeViewModel.placeList);
         adapter.setOnItemClickListener(place -> {
-            LogUtils.d(TAG, " name = " + place.getName() + ". lat" + place.getLocation().getLat());
             realTimeViewModel.searchPlaces(place.getLocation());
         });
         placeRecyclerView.setAdapter(adapter);
@@ -130,7 +129,6 @@ public class PlaceFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                LogUtils.d(TAG, "afterTextChanged: ");
                 final String content = s.toString().trim();
                 if (content.length() >= 2 && !query.equals(content)) {
                     placeViewModel.searchPlaces(content);
@@ -143,11 +141,9 @@ public class PlaceFragment extends Fragment {
             }
         });
         placeViewModel.placeLiveData.observe(Objects.requireNonNull(this.getActivity()), result -> {
-            LogUtils.d(TAG, "initListener: placeLiveData.observe ");
             if (result != null) {
                 placeViewModel.placeList.clear();
                 placeViewModel.placeList.addAll(result);
-                LogUtils.d(TAG, "observe placeList = " + placeViewModel.placeList.size());
                 if (placeViewModel.placeList.size() != 0) {
                     placeRecyclerView.setVisibility(View.VISIBLE);
                     bgImageView.setVisibility(View.GONE);
@@ -156,13 +152,12 @@ public class PlaceFragment extends Fragment {
                 }
                 adapter.notifyDataSetChanged();
             } else {
-                LogUtils.d(TAG, "initListener: placeLiveData.observe null");
                 Toast.makeText(PlaceFragment.this.getActivity(), "未能查询到任何地点", Toast.LENGTH_SHORT).show();
             }
         });
-        realTimeViewModel.realTimeLiveData.observe(this.getActivity(), realTime -> {
+        realTimeViewModel.realTimeLiveData.observe(Objects.requireNonNull(this.getActivity()), realTime -> {
             if (realTime != null) {
-                LogUtils.d(TAG, " " + realTime.getPressure() + " " + realTime.getAirQuality());
+                LogUtils.d(TAG, " pressure = " + realTime.getPressure() + " temperature = " + realTime.getTemperature());
             } else {
                 LogUtils.d(TAG, "未能查询到天气情报");
             }

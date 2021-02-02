@@ -17,31 +17,9 @@ public class PlaceViewModel extends ViewModel {
     private static final String TAG = "PlaceViewModel";
     private final MutableLiveData<String> searchLiveData = new MutableLiveData<>();
     final List<PlaceResponse.Place> placeList = new ArrayList<>();
-    MutableLiveData<List<PlaceResponse.Place>> responseLiveData = new MutableLiveData<>();
-
-
-    private final IQueryListener iQueryListener = new IQueryListener() {
-        @Override
-        public void success(List<PlaceResponse.Place> placeList) {
-            responseLiveData.postValue(placeList);
-            LogUtils.d(TAG, System.currentTimeMillis() + " success");
-        }
-
-        @Override
-        public void failed(String error) {
-            responseLiveData.postValue(null);
-            LogUtils.d(TAG, error);
-        }
-    };
 
     final LiveData<List<PlaceResponse.Place>> placeLiveData = Transformations.switchMap(searchLiveData,
-            input -> {
-                LogUtils.d(TAG, "apply: input = " + input);
-                synchronized (PlaceViewModel.class) {
-                    Repository.getInstance().searchPlaces(input, iQueryListener);
-                }
-                return responseLiveData;
-            });
+            input -> Repository.getInstance().searchPlaces(input));
 
     public void searchPlaces(String query) {
         LogUtils.d(TAG, "searchPlaces: query = " + query);
