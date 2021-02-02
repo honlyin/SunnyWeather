@@ -17,13 +17,9 @@ import java.util.List;
 public class RealTimeViewModel extends ViewModel {
     private static final String TAG = "RealTimeViewModel";
     private final MutableLiveData<PlaceResponse.Location> searchLiveData = new MutableLiveData<>();
-    MutableLiveData<RealTimeResponse.RealTime> responseLiveData;
 
     public final LiveData<RealTimeResponse.RealTime> realTimeLiveData = Transformations.switchMap(searchLiveData,
-            input -> {
-                responseLiveData = Repository.getInstance().refreshWeather(input.getLng(), input.getLat());
-                return responseLiveData;
-            });
+            input -> Repository.getInstance().refreshWeather(input.getLng(), input.getLat()));
 
     public void searchPlaces(PlaceResponse.Location location) {
         LogUtils.d(TAG, "searchPlaces: query = " + location.getLat() + "," + location.getLng());

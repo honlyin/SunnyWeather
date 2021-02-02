@@ -28,7 +28,6 @@ public class Repository {
     private static final String TAG = "Repository";
     private static Repository repository;
     private PlaceResponse mPlaceResponse;
-    private RealTimeResponse.RealTime mRealTime;
     private final ContentResolver resolver;
     private final static Uri CONTENT_URIS = Uri.parse("content://" +
             MyContentProvider.AUTHORITY + "/" +
@@ -52,8 +51,7 @@ public class Repository {
         public void success(Object response) {
             LogUtils.d(TAG, "response = " + response);
             if (response instanceof RealTimeResponse) {
-                mRealTime = ((RealTimeResponse) response).getResult().getRealTime();
-                realTimeMutableLiveData.postValue(mRealTime);
+                realTimeMutableLiveData.postValue(((RealTimeResponse) response).getResult().getRealTime());
             }
         }
 
