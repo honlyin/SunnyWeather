@@ -38,12 +38,9 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         final PlaceResponse.Place place = placeList.get(position);
         holder.placeName.setText(place.getName());
         holder.placeAddress.setText(place.getAddress());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onItemClickListener != null) {
-                    onItemClickListener.onItemListener(place);
-                }
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemListener(place);
             }
         });
     }

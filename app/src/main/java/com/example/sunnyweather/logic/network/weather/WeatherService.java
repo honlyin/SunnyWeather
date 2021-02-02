@@ -13,4 +13,7 @@ public interface WeatherService {
 
     @GET("v2.5/" + SunnyWeatherApplication.TOKEN + "/{lng},{lat}/daily.json")
     Call<RealTimeResponse> getDailyWeather(@Path("lng") String lng, @Path("lat") String lat);
+
+    @GET("v2.5/" + SunnyWeatherApplication.TOKEN + "/{lng},{lat}/hourly.json")
+    Call<RealTimeResponse> getHourlyWeather(@Path("lng") String lng, @Path("lat") String lat);
 }
