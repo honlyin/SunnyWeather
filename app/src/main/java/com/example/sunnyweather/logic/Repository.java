@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,6 +34,7 @@ public class Repository {
     private static Repository repository;
     private PlaceResponse mPlaceResponse;
     private final ExecutorService singleThreadExecutor;
+    private final CyclicBarrier cyclicBarrier;
     private final ContentResolver resolver;
     private final static Uri CONTENT_URIS = Uri.parse("content://" +
             MyContentProvider.AUTHORITY + "/" +
@@ -44,6 +46,7 @@ public class Repository {
     private Repository() {
         resolver = SunnyWeatherApplication.getContext().getContentResolver();
         singleThreadExecutor = Executors.newSingleThreadExecutor();
+        cyclicBarrier = new CyclicBarrier(2);
     }
 
     public static Repository getInstance() {
