@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -24,6 +25,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -34,7 +36,8 @@ public class Repository {
     private static Repository repository;
     private PlaceResponse mPlaceResponse;
     private final ExecutorService singleThreadExecutor;
-    private final CyclicBarrier cyclicBarrier;
+    private final ExecutorService fixedThreadPool;
+
     private final ContentResolver resolver;
     private final static Uri CONTENT_URIS = Uri.parse("content://" +
             MyContentProvider.AUTHORITY + "/" +
@@ -46,7 +49,8 @@ public class Repository {
     private Repository() {
         resolver = SunnyWeatherApplication.getContext().getContentResolver();
         singleThreadExecutor = Executors.newSingleThreadExecutor();
-        cyclicBarrier = new CyclicBarrier(2);
+        fixedThreadPool = Executors.newFixedThreadPool(2);
+
     }
 
     public static Repository getInstance() {
@@ -59,6 +63,7 @@ public class Repository {
     private final ILoadListener loadListener = new ILoadListener() {
         @Override
         public void success(Object response) {
+
             LogUtils.d(TAG, "response = " + response);
             if (response instanceof RealTimeResponse) {
                 realTimeMutableLiveData.postValue(((RealTimeResponse) response).getResult().getRealTime());
@@ -156,15 +161,17 @@ public class Repository {
 
     public MutableLiveData<RealTimeResponse.RealTime> refreshWeather(String lng, String lat) {
 
-        singleThreadExecutor.execute(() ->
-                WeatherNetwork.getInstance().getRealtimeWeather(lng, lat, loadListener));
+        fixedThreadPool.execute(() -> {
+            WeatherNetwork.getInstance().getRealtimeWeather(lng, lat, loadListener);
+        });
         return realTimeMutableLiveData;
     }
 
     public MutableLiveData<WeatherResponse.Result> getWeather(String lng, String lat) {
 
-        singleThreadExecutor.execute(() ->
-                WeatherNetwork.getInstance().getWeatherResponse(lng, lat, loadListener));
+        fixedThreadPool.execute(() -> {
+            WeatherNetwork.getInstance().getWeatherResponse(lng, lat, loadListener);
+        });
         return resultMutableLiveData;
     }
 

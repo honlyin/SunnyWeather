@@ -1,22 +1,31 @@
 package com.example.sunnyweather.logic.network.weather;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.sunnyweather.logic.model.RealTimeResponse;
 import com.example.sunnyweather.logic.model.WeatherResponse;
 import com.example.sunnyweather.logic.network.ILoadListener;
 import com.example.sunnyweather.logic.network.ServiceCreator;
+import com.example.sunnyweather.utils.LogUtils;
+
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class WeatherNetwork {
+    private static final String TAG = "WeatherNetwork";
     private static WeatherNetwork weatherNetwork;
     private final WeatherService weatherService;
+    private final CyclicBarrier cyclicBarrier;
 
     private WeatherNetwork() {
         weatherService = ServiceCreator.getInstance().create(WeatherService.class);
+        cyclicBarrier = new CyclicBarrier(2, () -> LogUtils.d(TAG, "执行完毕"));
     }
 
     public static WeatherNetwork getInstance() {
@@ -56,6 +65,11 @@ public class WeatherNetwork {
             @Override
             public void onResponse(@NonNull Call<WeatherResponse> call, @NonNull Response<WeatherResponse> response) {
                 if (response.body() != null) {
+                    try {
+                        cyclicBarrier.await();
+                    } catch (BrokenBarrierException | InterruptedException e) {
+                        LogUtils.e(TAG, e.toString());
+                    }
                     iLoadListener.success(response.body());
                 } else {
                     iLoadListener.failed("天气预报数据为空！");

@@ -1,5 +1,6 @@
 package com.example.sunnyweather.ui.place;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -23,6 +24,7 @@ import com.example.sunnyweather.R;
 import com.example.sunnyweather.logic.model.PlaceResponse;
 import com.example.sunnyweather.logic.model.RealTimeResponse;
 import com.example.sunnyweather.logic.model.WeatherResponse;
+import com.example.sunnyweather.ui.WeatherActivity;
 import com.example.sunnyweather.ui.weather.RealTimeViewModel;
 import com.example.sunnyweather.utils.LogUtils;
 
@@ -161,18 +163,17 @@ public class PlaceFragment extends Fragment {
         realTimeViewModel.realTimeLiveData.observe(Objects.requireNonNull(this.getActivity()), realTime -> {
             if (realTime != null) {
                 LogUtils.d(TAG, " pressure = " + realTime.getPressure() + " temperature = " + realTime.getTemperature());
+                Intent intent = new Intent(this.getActivity(), WeatherActivity.class);
+                startActivity(intent);
             } else {
                 LogUtils.d(TAG, "未能查询到天气情报");
             }
         });
-        realTimeViewModel.resultLiveData.observe(this.getActivity(), new Observer<WeatherResponse.Result>() {
-            @Override
-            public void onChanged(WeatherResponse.Result result) {
-                if (result != null) {
-                    LogUtils.d(TAG, "temp = " + result.getDailyResponse().getTemperatureList().get(0));
-                } else {
-                    LogUtils.d(TAG, "未能查询到未来天气情报");
-                }
+        realTimeViewModel.resultLiveData.observe(this.getActivity(), result -> {
+            if (result != null) {
+                LogUtils.d(TAG, "temp = " + result.getDailyResponse().getTemperatureList().get(0));
+            } else {
+                LogUtils.d(TAG, "未能查询到未来天气情报");
             }
         });
 
