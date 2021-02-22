@@ -1,21 +1,17 @@
 package com.example.sunnyweather.logic;
 
 import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.sunnyweather.SunnyWeatherApplication;
-import com.example.sunnyweather.logic.model.RealTimeResponse;
-import com.example.sunnyweather.logic.model.WeatherResponse;
+import com.example.sunnyweather.logic.model.ActualResponse;
+import com.example.sunnyweather.logic.model.PredictionResponse;
 import com.example.sunnyweather.logic.model.db.MyContentProvider;
 import com.example.sunnyweather.logic.model.db.PlaceReaderContract;
 import com.example.sunnyweather.logic.model.PlaceResponse;
 import com.example.sunnyweather.logic.network.ILoadListener;
-import com.example.sunnyweather.logic.network.place.IQueryListener;
 import com.example.sunnyweather.logic.network.weather.WeatherNetwork;
 import com.example.sunnyweather.utils.LogUtils;
 
@@ -25,9 +21,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -42,8 +35,8 @@ public class Repository {
     private final static Uri CONTENT_URIS = Uri.parse("content://" +
             MyContentProvider.AUTHORITY + "/" +
             PlaceReaderContract.PlaceEntry.TABLE_NAME);
-    private final MutableLiveData<RealTimeResponse.RealTime> realTimeMutableLiveData = new MutableLiveData<>();
-    private final MutableLiveData<WeatherResponse.Result> resultMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<ActualResponse.RealTime> realTimeMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<PredictionResponse.Result> resultMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<PlaceResponse.Place>> placeListLiveData = new MutableLiveData<>();
 
     private Repository() {
@@ -65,11 +58,11 @@ public class Repository {
         public void success(Object response) {
 
             LogUtils.d(TAG, "response = " + response);
-            if (response instanceof RealTimeResponse) {
-                realTimeMutableLiveData.postValue(((RealTimeResponse) response).getResult().getRealTime());
+            if (response instanceof ActualResponse) {
+                realTimeMutableLiveData.postValue(((ActualResponse) response).getResult().getRealTime());
             }
-            if (response instanceof WeatherResponse) {
-                resultMutableLiveData.postValue(((WeatherResponse) response).getResult());
+            if (response instanceof PredictionResponse) {
+                resultMutableLiveData.postValue(((PredictionResponse) response).getResult());
             }
         }
 
@@ -159,7 +152,7 @@ public class Repository {
         return placeListLiveData;
     }
 
-    public MutableLiveData<RealTimeResponse.RealTime> refreshWeather(String lng, String lat) {
+    public MutableLiveData<ActualResponse.RealTime> refreshActualWeather(String lng, String lat) {
 
         fixedThreadPool.execute(() -> {
             WeatherNetwork.getInstance().getRealtimeWeather(lng, lat, loadListener);
@@ -167,7 +160,7 @@ public class Repository {
         return realTimeMutableLiveData;
     }
 
-    public MutableLiveData<WeatherResponse.Result> getWeather(String lng, String lat) {
+    public MutableLiveData<PredictionResponse.Result> getPredictionWeather(String lng, String lat) {
 
         fixedThreadPool.execute(() -> {
             WeatherNetwork.getInstance().getWeatherResponse(lng, lat, loadListener);

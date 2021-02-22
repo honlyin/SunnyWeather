@@ -1,11 +1,9 @@
 package com.example.sunnyweather.logic.network.weather;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
-import com.example.sunnyweather.logic.model.RealTimeResponse;
-import com.example.sunnyweather.logic.model.WeatherResponse;
+import com.example.sunnyweather.logic.model.ActualResponse;
+import com.example.sunnyweather.logic.model.PredictionResponse;
 import com.example.sunnyweather.logic.network.ILoadListener;
 import com.example.sunnyweather.logic.network.ServiceCreator;
 import com.example.sunnyweather.utils.LogUtils;
@@ -40,10 +38,10 @@ public class WeatherNetwork {
     }
 
     public void getRealtimeWeather(String lng, String lat, ILoadListener iLoadListener) {
-        Call<RealTimeResponse> realTimeResponseCall = weatherService.getRealTimeWeather(lng, lat);
-        realTimeResponseCall.enqueue(new Callback<RealTimeResponse>() {
+        Call<ActualResponse> realTimeResponseCall = weatherService.getRealTimeWeather(lng, lat);
+        realTimeResponseCall.enqueue(new Callback<ActualResponse>() {
             @Override
-            public void onResponse(@NonNull Call<RealTimeResponse> call, @NonNull Response<RealTimeResponse> response) {
+            public void onResponse(@NonNull Call<ActualResponse> call, @NonNull Response<ActualResponse> response) {
                 if (response.body() != null) {
                     iLoadListener.success(response.body());
                 } else {
@@ -52,7 +50,7 @@ public class WeatherNetwork {
             }
 
             @Override
-            public void onFailure(@NonNull Call<RealTimeResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<ActualResponse> call, @NonNull Throwable t) {
                 iLoadListener.failed("实时天气" + t.toString());
             }
 
@@ -60,10 +58,10 @@ public class WeatherNetwork {
     }
 
     public void getWeatherResponse(String lng, String lat, ILoadListener iLoadListener) {
-        Call<WeatherResponse> weatherResponseCall = weatherService.getWeather(lng, lat);
-        weatherResponseCall.enqueue(new Callback<WeatherResponse>() {
+        Call<PredictionResponse> weatherResponseCall = weatherService.getWeather(lng, lat);
+        weatherResponseCall.enqueue(new Callback<PredictionResponse>() {
             @Override
-            public void onResponse(@NonNull Call<WeatherResponse> call, @NonNull Response<WeatherResponse> response) {
+            public void onResponse(@NonNull Call<PredictionResponse> call, @NonNull Response<PredictionResponse> response) {
                 if (response.body() != null) {
                     try {
                         cyclicBarrier.await();
@@ -78,7 +76,7 @@ public class WeatherNetwork {
             }
 
             @Override
-            public void onFailure(@NonNull Call<WeatherResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<PredictionResponse> call, @NonNull Throwable t) {
                 iLoadListener.failed("预报天气" + t.toString());
             }
         });

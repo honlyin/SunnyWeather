@@ -2,7 +2,7 @@ package com.example.sunnyweather.logic.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class RealTimeResponse {
+public class ActualResponse {
     Result result;
 
     public Result getResult() {
